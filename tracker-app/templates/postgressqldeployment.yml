@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: postgresdb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgresdb
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: postgresdb
+    spec:
+      containers:
+      - name: postgresdb
+        image: postgres:14.2-alpine
+        env:
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: pgsql-db-secrets
+                key: password
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: pgsql-db-secrets
+                key: username
+          - name: POSTGRES_DB
+            value: utilizationTracker
+          - name: PGDATA
+            value: /var/lib/postgresql/data/pgdata2
+        ports:
+        - containerPort: 5432
+        volumeMounts:
+         - name: pgsql-persistent-volume
+           mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: pgsql-persistent-volume
+          persistentVolumeClaim: 
+            claimName: pg-pv-claim
