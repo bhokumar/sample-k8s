@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minimal-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx-example
+  rules:
+  - host: example.com
+    http:
+      paths:
+      - path: /utilization
+        pathType: Prefix
+        backend:
+          service:
+            name: utilizationapi
+            port:
+              number: 8080

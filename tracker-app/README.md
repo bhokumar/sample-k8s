@@ -16,3 +16,7 @@ helm list
 helm uninstall packageName
 kubectl exec -it postgresdb-d8bd64bf7-42fcg bash
 postgresdb-d8bd64bf7-42fcg
+
+
+Cheatseat
+https://kubernetes.io/docs/reference/kubectl/cheatsheet/
